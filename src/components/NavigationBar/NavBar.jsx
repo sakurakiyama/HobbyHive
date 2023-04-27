@@ -5,6 +5,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: 'Montserrat, sans-serif',
+  },
+});
+
 function NavBar() {
   const { user, logout } = useAuth0();
   const [userPhoto, setUserPhoto] = useState();
@@ -50,20 +58,22 @@ function NavBar() {
             <img alt='User Profile' id='userPhoto' src={userPhoto} />
           ) : null}
         </button>
-        <Menu
-          id='basic-menu'
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleCloseDropDown}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button',
-          }}
-        >
-          <MenuItem onClick={handleCloseDropDown}>Profile</MenuItem>
-          <MenuItem onClick={handleCloseDropDown}>My Account</MenuItem>
-          <MenuItem onClick={handleCloseDropDown}>Messages</MenuItem>
-          <MenuItem onClick={() => exit()}>Logout</MenuItem>
-        </Menu>
+        <ThemeProvider theme={theme}>
+          <Menu
+            id='basic-menu'
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleCloseDropDown}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+            <MenuItem onClick={handleCloseDropDown}>My Account</MenuItem>
+            <MenuItem onClick={handleCloseDropDown}>Messages</MenuItem>
+            <MenuItem onClick={() => exit()}>Logout</MenuItem>
+          </Menu>
+        </ThemeProvider>
       </div>
     </div>
   );

@@ -27,9 +27,9 @@ function SectionOne() {
 
   return (
     <div className='flex items-center mx-auto justify-center space-x-[25px]'>
-    <div className='w-[40vw] mt-40'>
+    <div id='tagline' className='w-[40vw] mt-40'>
       <div className='flex item-middle'>
-        <h1 className='text-4xl text-gray-800'> Join a community of </h1>
+        <h1  className='text-4xl text-gray-800'> Join a community of </h1>
         <h1 className='table ml-2 text-gray-800 text-4xl px-2 border-2 border-solid border-[#e8ca1f] rounded-md'>
           <TextTransition springConfig={presets.spring}>
             {hobbies[index % hobbies.length]}

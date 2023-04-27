@@ -14,7 +14,7 @@ function PartTwo() {
           alt='people'
         ></img>
       </div>
-      <div className='w-[40vw]'>
+      <div id='introduction' className='w-[40vw]'>
         <h1 className='text-2xl text-gray-800 mb-3'>
           A social networking platform designed to connect people by their
           shared interests and passions.
