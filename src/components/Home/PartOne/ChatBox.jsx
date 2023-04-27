@@ -10,7 +10,7 @@ function ChatBox() {
     <div className='max-w-screen-sm mx-auto p-4 w-[40vw]'>
       <div className='bg-white rounded-lg shadow-lg p-6 pb-5'>
         <div className='space-y-4'>
-          <div className='flex items-end justify-end message-animation message-animation-1'>
+          <div className='flex space-x-1 items-end justify-end message-animation message-animation-1'>
             <div className='bg-blue-500 text-white rounded-lg px-4 py-2 text-sm max-w-xs'>
               <p>
                 Heyyy, I saw your post in the pottery group and I'm
@@ -19,7 +19,7 @@ function ChatBox() {
             </div>
             <Avatar alt='Person A' src={PersonA} />
           </div>
-          <div className='flex items-end message-animation message-animation-2'>
+          <div className='flex space-x-1 items-end message-animation message-animation-2'>
             <Avatar alt='Person B' src={PersonB} />
             <div className='bg-gray-300 text-gray-900 rounded-lg px-4 py-2 text-sm max-w-xs'>
               <p>
@@ -28,7 +28,7 @@ function ChatBox() {
               </p>
             </div>
           </div>
-          <div className='flex items-end justify-end message-animation message-animation-3'>
+          <div className='flex space-x-1 items-end justify-end message-animation message-animation-3'>
             <div className='bg-blue-500 text-white rounded-lg px-4 py-2 text-sm max-w-xs'>
               <p>
                 I'm really into making planters and mugs right now. I love
@@ -37,7 +37,7 @@ function ChatBox() {
             </div>
             <Avatar alt='Person A' src={PersonA} />
           </div>
-          <div className='flex items-end message-animation message-animation-4'>
+          <div className='flex space-x-1 items-end message-animation message-animation-4'>
             <Avatar alt='Person B' src={PersonB} />
             <div className='bg-gray-300 text-gray-900 rounded-lg px-4 py-2 text-sm max-w-xs'>
               <p>
@@ -46,7 +46,7 @@ function ChatBox() {
               </p>
             </div>
           </div>
-          <div className='flex items-end justify-end message-animation message-animation-5'>
+          <div className='flex space-x-1 items-end justify-end message-animation message-animation-5'>
             <div className='bg-blue-500 text-white rounded-lg px-4 py-2 text-sm max-w-xs'>
               <p>
                 No way! I've been dying to try a neon color. Where did you
@@ -55,7 +55,7 @@ function ChatBox() {
             </div>
             <Avatar alt='Person A' src={PersonA} />
           </div>
-          <div className='flex items-end message-animation message-animation-6'>
+          <div className='flex space-x-1 items-end message-animation message-animation-6'>
             <Avatar alt='Person B' src={PersonB} />
             <div className='bg-gray-300 text-gray-900 rounded-lg px-4 py-2 text-sm max-w-xs'>
               <p>

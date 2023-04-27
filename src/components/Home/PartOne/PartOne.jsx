@@ -31,7 +31,7 @@ function SectionOne() {
       <div className='flex item-middle'>
         <h1 className='text-4xl text-gray-800'> Join a community of </h1>
         <h1 className='table ml-2 text-gray-800 text-4xl px-2 border-2 border-solid border-[#e8ca1f] rounded-md'>
-          <TextTransition springConfig={presets.wobbly}>
+          <TextTransition springConfig={presets.spring}>
             {hobbies[index % hobbies.length]}
           </TextTransition>
         </h1>

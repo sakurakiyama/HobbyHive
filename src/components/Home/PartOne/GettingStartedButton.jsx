@@ -1,12 +1,31 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './PartOne.scss';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from 'react-router-dom';
 
 
 function GettingStartedButton() {
+  const [button, setButton] = useState('GET STARTED'); 
+  const { user, loginWithRedirect } = useAuth0();
+  const navigate = useNavigate();
+
+  function handleLogin() {
+    loginWithRedirect(); 
+  }
+
+  useEffect(() => {
+    if (user) {
+      setButton('MAIN'); 
+    } else {
+      setButton('GET STARTED');
+    }
+  }, [user])
+  
+
   return (
     <div className='buttons'>
-    <button className='blob-btn'>
-      GET STARTED
+    <button className='blob-btn' onClick={() => !user ? handleLogin() : navigate('/main')}>
+      {button}
       <span className='blob-btn__inner'>
         <span className='blob-btn__blobs'>
           <span className='blob-btn__blob'></span>

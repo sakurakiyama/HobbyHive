@@ -4,6 +4,7 @@
 
 #navBarContainer {
   padding-left: 50px;
+  padding-right: 50px;
   display: flex;
   align-items: center;
   top: 0;
@@ -22,7 +23,28 @@
   float: left;
 }
 
+.right {
+  display: flex;
+  float: right;
+}
 .textLogo {
     width: 250px;
     height: auto;
+}
+
+#userPhoto {
+  width: 40px;
+  height: auto;
+  border-radius: 20px;
+}
+
+#profileBtn {
+  outline: 0;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  background-color: transparent;
+  touch-action: manipulation;
+  overflow-wrap: anywhere;
+  text-align: left;
 }
