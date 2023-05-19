@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './Home/Home.jsx'
-import SignUp from './CreateProfile/CreateProfile.jsx';
+import SignUp from './Main/CreateProfile/CreateProfile.jsx';
 import Main from './Main/Main.jsx'
 import Profile from './Profile/Profile.jsx'
 function App() {

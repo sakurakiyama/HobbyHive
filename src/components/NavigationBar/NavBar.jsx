@@ -3,8 +3,7 @@ import TextLogo from '../../images/TextLogo.png';
 import './NavBar.scss';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
+import { MenuItem, Menu } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -62,7 +61,7 @@ function NavBar() {
           <Menu
             id='basic-menu'
             anchorEl={anchorEl}
-            open={open}
+            open={open ? true : false}
             onClose={handleCloseDropDown}
             MenuListProps={{
               'aria-labelledby': 'basic-button',
