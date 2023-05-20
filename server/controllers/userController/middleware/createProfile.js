@@ -20,7 +20,7 @@ const fs = require('fs');
  */
 
 const createProfile = async (req, res, next) => {
-  const { firstName, lastName, email, username, city, bio } = req.fields;
+  const { firstName, lastName, email, username, city, bio, interests } = req.fields;
   const { photo } = req.files;
   const profileready = true;
 
@@ -32,7 +32,8 @@ const createProfile = async (req, res, next) => {
     !email ||
     !username ||
     !city ||
-    !bio
+    !bio ||
+    !interests
   ) {
     return next({
       log: 'Error occurred in userController.createProfile middleware: Missing required fields',
