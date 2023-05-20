@@ -5,6 +5,7 @@ import StepThree from './StepThree.jsx';
 import StepFour from './StepFour.jsx';
 import StepFive from './StepFive.jsx';
 import StepSix from './StepSix.jsx';
+import StepSeven from './StepSeven.jsx';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -18,6 +19,7 @@ function CreateProfile({ onClose }) {
     username: undefined,
     city: undefined,
     bio: undefined,
+    interests: undefined,
   };
   const [profile, setProfile] = useState(defaultProfile);
   const [profileCreated, setProfileCreated] = useState(false);
@@ -48,6 +50,13 @@ function CreateProfile({ onClose }) {
     setProfile({
       ...profile,
       bio: bio,
+    });
+  };
+
+  const setInterests = (interests) => {
+    setProfile({
+      ...profile,
+      interests: interests,
     });
   };
 
@@ -90,7 +99,8 @@ function CreateProfile({ onClose }) {
         <StepThree setUsername={setUsername} />
         <StepFour setLocation={setLocation} />
         <StepFive setBio={setBio} />
-        <StepSix setPhoto={setPhoto} />
+        <StepSix setInterests={setInterests}/>
+        <StepSeven setPhoto={setPhoto} />
       </StepWizard>
     </div>
   );
