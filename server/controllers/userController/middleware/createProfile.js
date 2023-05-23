@@ -22,7 +22,6 @@ const fs = require('fs');
 const createProfile = async (req, res, next) => {
   const { firstName, lastName, email, username, city, bio, interests } = req.fields;
   const { photo } = req.files;
-  const profileready = true;
 
   // Invoke global error handler if any of the fields are empty
   if (
@@ -53,8 +52,7 @@ const createProfile = async (req, res, next) => {
         photo = $3,
         username = $5,
         city = $6,
-        bio = $7,
-        profileready = $8
+        bio = $7
     WHERE email = $4
     RETURNING *
     `;
@@ -66,7 +64,6 @@ const createProfile = async (req, res, next) => {
       username,
       city,
       bio,
-      profileready,
     ];
 
     // Add the user's profile information to the database

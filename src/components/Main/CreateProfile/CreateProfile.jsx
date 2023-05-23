@@ -9,7 +9,7 @@ import StepSeven from './StepSeven.jsx';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
-function CreateProfile({ onClose }) {
+function CreateProfile({ onClose, setUserData }) {
   const { user } = useAuth0();
 
   const defaultProfile = {
@@ -78,11 +78,12 @@ function CreateProfile({ onClose }) {
 
       const createUserProfile = async () => {
         try {
-          await axios.post('/user/createProfile', formData, {
+          const response = await axios.post('/user/createProfile', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
+          setUserData(response.data);
         } catch (error) {
           console.log(error);
         }
@@ -99,7 +100,7 @@ function CreateProfile({ onClose }) {
         <StepThree setUsername={setUsername} />
         <StepFour setLocation={setLocation} />
         <StepFive setBio={setBio} />
-        <StepSix setInterests={setInterests}/>
+        <StepSix setInterests={setInterests} />
         <StepSeven setPhoto={setPhoto} />
       </StepWizard>
     </div>
