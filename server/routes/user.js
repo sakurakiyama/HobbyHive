@@ -10,9 +10,16 @@ router.post(
   '/createProfile',
   userController.createProfile,
   userController.addInterests,
+  userController.profileReady,
+  userController.getInterests,
   (req, res) => {
-    return res.status(200).json(res.locals.user);
+    return res
+      .status(200)
+      .json({ user: res.locals.user, interests: res.locals.interests });
   }
 );
 
+router.get('/getInterests/:id', userController.getInterests, (req, res) => {
+  return res.status(200).json(res.locals.interests);
+});
 module.exports = router;

@@ -37,17 +37,18 @@ function Main() {
     else {
       async function sendUser() {
         try {
-          const information = await axios.post('/user/getOrCreateUser', {
+          const response = await axios.post('/user/getOrCreateUser', {
             email: user.email,
           });
-          const data = information.data;
+          const data = response.data;
           // if the response data doesn't include a bio, open the modal to prompt the user to create a profile
-          if (!data.bio) {
+          if (!data.profileready) {
             setOpen(true);
           }
           // Otherwise, the profile has already been created therefore, set state.
           else {
-            setUserData(data);
+            const interests = await axios.get(`/user/getInterests/${data.id}`);
+            setUserData([{ user: data }, { interests: interests.data }]);
           }
         } catch (error) {
           console.log(error);
@@ -67,7 +68,7 @@ function Main() {
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
-          <CreateProfile onClose={handleClose} />
+          <CreateProfile onClose={handleClose} setUserData={setUserData} />
         </Box>
       </Modal>
     </div>

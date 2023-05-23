@@ -11,7 +11,6 @@
  */
 
 const userModel = require('../../../models/userModel');
-const fs = require('fs');
 
 /**
  * ====================================
@@ -20,29 +19,26 @@ const fs = require('fs');
  */
 
 const addInterests = async (req, res, next) => {
-  const { interests, email } = req.fields;
-
+  const { interests } = req.fields;
+  const userId = res.locals.user.id;
   try {
-    // Grab the interests from the request
     const interestValues = interests.split(',');
     // Create placeholders for the query
     const placeholders = interestValues
       .map((_, index) => `$${index + 1}`)
       .join(',');
 
-    // Grab all the IDs from the interest table for the interests the user selected
+    // Grab all the ids from the interest table for the interests the user selected
     const getInterestQuery = `SELECT id FROM interests WHERE interest IN (${placeholders})`;
-    const response = await userModel.query(getInterestQuery, interestValues);
+    const { rows: interestIds } = await userModel.query(getInterestQuery, interestValues);
 
-    // Convert them to an array
-    const ids = response.rows.map((obj) => obj.id);
-
-    // Update the users with the interests ids
-    const addInterestsQuery = `UPDATE users SET userInterests = $1 WHERE email = $2 RETURNING *`;
-    const userData = [JSON.stringify(ids), email];
-    const result = await userModel.query(addInterestsQuery, userData);
-    res.locals.user = result.rows[0];
-
+    // Loop over the interests, executing a query to insert into the userInterests table
+    const joinUserInterestsQuery = `INSERT INTO userInterests (user_id, interest_id) VALUES ($1, $2)`;
+    for (const interest of interestIds) {
+      const interestId = interest.id;
+      await userModel.query(joinUserInterestsQuery, [userId, interestId]);
+    }
+    
     return next();
   } catch (error) {
     return next({
