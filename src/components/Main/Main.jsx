@@ -52,6 +52,7 @@ function Main() {
           else {
             const interests = await axios.get(`/user/getInterests/${data.id}`);
             setUserData({ user: data, interests: interests.data });
+            // TODO: Set the user profile picture to the picture they uploaded when they created an account
           }
         } catch (error) {
           console.log(error);
@@ -109,6 +110,7 @@ function Main() {
                 name=''
               />
               <span className='absolute top-5 right-5 cursor-pointer'>
+                {/* TODO: On click, we need to search for the location provided and populate all groups on a map with the selected interests */}
                 <FaSearch
                   onClick={() => {}}
                   className='text-gray-500 hover:text-gray-600'
