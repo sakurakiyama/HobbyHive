@@ -4,7 +4,7 @@
  * @module userController.profileReady
  *
  * @description
- * This controller middleware is used to add change the
+ * This controller middleware is used to change the
  * profileReady flag for a user
  *
  * **************************************************
