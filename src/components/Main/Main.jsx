@@ -7,6 +7,7 @@ import { Box } from '@mui/material';
 import axios from 'axios';
 import CreateProfile from './CreateProfile/CreateProfile.jsx';
 import Interests from './Interests/Interests.jsx';
+import { FaMicrophone, FaSearch } from 'react-icons/fa';
 
 const style = {
   position: 'absolute',
@@ -24,7 +25,7 @@ function Main() {
   const [userData, setUserData] = useState([]);
   const [open, setOpen] = useState(false);
   const [interestClicked, setInterestClicked] = useState({});
-  
+
   const { user } = useAuth0();
   const navigate = useNavigate();
 
@@ -88,7 +89,34 @@ function Main() {
         </Box>
       </Modal>
       <div className='flex place-content-center space-x-10'>
-        <Interests userData={userData} handleClick={handleClick} interestClicked={interestClicked} />
+        <Interests
+          userData={userData}
+          handleClick={handleClick}
+          interestClicked={interestClicked}
+        />
+      </div>
+      <div className='max-w-md mx-auto rounded-lg overflow-hidden md:max-w-xl pt-10'>
+        <div className='md:flex'>
+          <div className='w-full p-3'>
+            <div className='relative'>
+              <span className='absolute top-5 left-4 border-r pr-4'>
+                <FaMicrophone className=' text-gray-400 hover:text-green-500 hover:cursor-pointer' />
+              </span>
+
+              <input
+                type='text'
+                className='pl-16 bg-white h-14 w-full px-12 rounded-lg focus:outline-none hover:cursor-pointer'
+                name=''
+              />
+              <span className='absolute top-5 right-5 cursor-pointer'>
+                <FaSearch
+                  onClick={() => {}}
+                  className='text-gray-500 hover:text-gray-600'
+                />
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
