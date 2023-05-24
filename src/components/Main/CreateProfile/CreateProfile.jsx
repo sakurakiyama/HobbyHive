@@ -84,6 +84,7 @@ function CreateProfile({ onClose, setUserData }) {
             },
           });
           setUserData(response.data);
+          // TODO: Set the user profile picture to the picture they uploaded when they created an account
         } catch (error) {
           console.log(error);
         }
