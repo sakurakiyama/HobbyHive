@@ -6,6 +6,7 @@ import { Modal } from '@mui/base';
 import { Box } from '@mui/material';
 import axios from 'axios';
 import CreateProfile from './CreateProfile/CreateProfile.jsx';
+import Interests from './Interests/Interests.jsx';
 
 const style = {
   position: 'absolute',
@@ -21,10 +22,11 @@ const style = {
 
 function Main() {
   const [userData, setUserData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [interestClicked, setInterestClicked] = useState({});
+  
   const { user } = useAuth0();
   const navigate = useNavigate();
-
-  const [open, setOpen] = useState(false);
 
   const handleClose = () => setOpen(false);
 
@@ -48,7 +50,7 @@ function Main() {
           // Otherwise, the profile has already been created therefore, set state.
           else {
             const interests = await axios.get(`/user/getInterests/${data.id}`);
-            setUserData([{ user: data }, { interests: interests.data }]);
+            setUserData({ user: data, interests: interests.data });
           }
         } catch (error) {
           console.log(error);
@@ -57,6 +59,20 @@ function Main() {
       sendUser();
     }
   }, []);
+
+  function handleClick(key) {
+    if (interestClicked[key]) {
+      setInterestClicked({
+        ...interestClicked,
+        [key]: false,
+      });
+    } else {
+      setInterestClicked({
+        ...interestClicked,
+        [key]: true,
+      });
+    }
+  }
 
   return (
     <div>
@@ -71,6 +87,9 @@ function Main() {
           <CreateProfile onClose={handleClose} setUserData={setUserData} />
         </Box>
       </Modal>
+      <div className='flex place-content-center space-x-10'>
+        <Interests userData={userData} handleClick={handleClick} interestClicked={interestClicked} />
+      </div>
     </div>
   );
 }
