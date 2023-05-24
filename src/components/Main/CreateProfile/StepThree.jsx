@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { BsArrowRightCircleFill, BsArrowLeftCircleFill } from 'react-icons/bs';
-import './Steps.scss';
-
 function StepThree({ nextStep, previousStep, setUsername }) {
   const [nickname, setNickname] = useState('');
   const handleFormSubmit = () => {

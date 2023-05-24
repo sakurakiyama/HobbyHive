@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { MenuItem, Menu } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+// TODO: Remove font family but add other themes in the future
 const theme = createTheme({
   typography: {
-    fontFamily: 'Montserrat, sans-serif',
+    fontFamily: 'Quicksand sans-serif',
   },
 });
 

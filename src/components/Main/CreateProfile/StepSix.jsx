@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Steps.scss';
 import { BsArrowRightCircleFill } from 'react-icons/bs';
 import { Theme, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';

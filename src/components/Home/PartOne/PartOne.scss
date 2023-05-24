@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 $indigo: rgb(36, 48, 154);
 $dark: #ffffff;
 
@@ -157,8 +156,4 @@ $borderW: 2px;
       }
     }
   }
-}
-
-#tagline {
-  font-family: 'Montserrat', sans-serif;
 }
