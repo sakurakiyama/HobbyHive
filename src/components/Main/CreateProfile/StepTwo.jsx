@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Steps.scss';
 import { BsArrowRightCircleFill } from 'react-icons/bs';
 
 function StepTwo({ nextStep, setFullName }) {
