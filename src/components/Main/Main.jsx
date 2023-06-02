@@ -7,6 +7,7 @@ import { Box } from '@mui/material';
 import axios from 'axios';
 import CreateProfile from './CreateProfile/CreateProfile.jsx';
 import Interests from './Interests/Interests.jsx';
+import Map from './Map/Map.jsx';
 import { FaMicrophone, FaSearch } from 'react-icons/fa';
 
 const style = {
@@ -89,14 +90,8 @@ function Main() {
           <CreateProfile onClose={handleClose} setUserData={setUserData} />
         </Box>
       </Modal>
-      <div className='flex place-content-center space-x-10'>
-        <Interests
-          userData={userData}
-          handleClick={handleClick}
-          interestClicked={interestClicked}
-        />
-      </div>
-      <div className='max-w-md mx-auto rounded-lg overflow-hidden md:max-w-xl pt-10'>
+      {/* Search bar here */}
+      <div className='max-w-md mx-auto rounded-lg overflow-hidden md:max-w-xl pb-10'>
         <div className='md:flex'>
           <div className='w-full p-3'>
             <div className='relative'>
@@ -119,6 +114,18 @@ function Main() {
             </div>
           </div>
         </div>
+      </div>
+      {/* Interest icons here */}
+      <div className='flex place-content-center space-x-10'>
+        <Interests
+          userData={userData}
+          handleClick={handleClick}
+          interestClicked={interestClicked}
+        />
+      </div>
+      {/* Map here */}
+      <div>
+        <Map />
       </div>
     </div>
   );
