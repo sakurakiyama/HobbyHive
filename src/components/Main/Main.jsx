@@ -26,6 +26,8 @@ function Main() {
   const [userData, setUserData] = useState([]);
   const [open, setOpen] = useState(false);
   const [interestClicked, setInterestClicked] = useState({});
+  const [inputField, setInputField] = useState([]);
+  const [position, setPosition] = useState({ address: undefined });
 
   const { user } = useAuth0();
   const navigate = useNavigate();
@@ -77,6 +79,13 @@ function Main() {
     }
   }
 
+  function finalPosition() {
+    setPosition({ address: inputField });
+  }
+
+  function addToInput(event) {
+    setInputField(event.target.value);
+  }
   return (
     <div>
       <NavBar />
@@ -103,11 +112,12 @@ function Main() {
                 type='text'
                 className='pl-16 bg-white h-14 w-full px-12 rounded-lg focus:outline-none hover:cursor-pointer'
                 name=''
+                onChange={addToInput}
               />
               <span className='absolute top-5 right-5 cursor-pointer'>
                 {/* TODO: On click, we need to search for the location provided and populate all groups on a map with the selected interests */}
                 <FaSearch
-                  onClick={() => {}}
+                  onClick={finalPosition}
                   className='text-gray-500 hover:text-gray-600'
                 />
               </span>
@@ -125,7 +135,7 @@ function Main() {
       </div>
       {/* Map here */}
       <div>
-        <Map />
+        <Map position={position} />
       </div>
     </div>
   );
