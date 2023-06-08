@@ -71,7 +71,6 @@ function CreateProfile({ onClose, setUserData }) {
 
   useEffect(() => {
     if (profileCreated) {
-      console.log(profile);
       const formData = new FormData();
       for (const key in profile) {
         formData.append(key, profile[key]);
