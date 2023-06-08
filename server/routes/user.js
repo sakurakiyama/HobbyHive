@@ -22,4 +22,8 @@ router.post(
 router.get('/getInterests/:id', userController.getInterests, (req, res) => {
   return res.status(200).json(res.locals.interests);
 });
+
+router.get('/uniqueUsername/', userController.uniqueUsername, (req, res) => {
+  return res.status(200).json(res.locals.unique);
+});
 module.exports = router;

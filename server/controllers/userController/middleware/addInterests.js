@@ -44,7 +44,7 @@ const addInterests = async (req, res, next) => {
     return next({
       log: `Error occurred in userController.addInterests middleware ${error}`,
       status: 400,
-      message: { error: 'Unable to create user profile' },
+      message: { error: 'Unable to add interests to user' },
     });
   }
 };

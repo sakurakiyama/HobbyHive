@@ -9,6 +9,7 @@ import CreateProfile from './CreateProfile/CreateProfile.jsx';
 import Interests from './Interests/Interests.jsx';
 import Map from './Map/Map.jsx';
 import { FaMicrophone, FaSearch } from 'react-icons/fa';
+// import { useSpeechRecognition } from 'react-speech-kit';
 
 const style = {
   position: 'absolute',
@@ -20,8 +21,7 @@ const style = {
   borderRadius: 5,
   boxShadow: 24,
   p: 4,
-  // TODO: Don't use this zIndex. Bandaid.
-  zIndex: 9999,
+  zIndex: 1200,
 };
 
 function Main() {

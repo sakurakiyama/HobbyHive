@@ -46,7 +46,7 @@ const getGroups = async (req, res, next) => {
     return next({
       log: `Error occurred in groupController.getGroups middleware ${error}`,
       status: 400,
-      message: { error: 'Unable to create user profile' },
+      message: { error: 'Unable to get groups' },
     });
   }
 };

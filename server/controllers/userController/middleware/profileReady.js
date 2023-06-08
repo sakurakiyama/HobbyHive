@@ -30,7 +30,7 @@ const profileReady = async (req, res, next) => {
     return next({
       log: `Error occurred in userController.profileReady middleware ${error}`,
       status: 400,
-      message: { error: 'Unable to create user profile' },
+      message: { error: 'Unable to set profile ready flag' },
     });
   }
 };

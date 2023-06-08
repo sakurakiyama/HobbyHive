@@ -3,25 +3,48 @@ import { BsArrowRightCircleFill, BsArrowLeftCircleFill } from 'react-icons/bs';
 
 function StepFour({ nextStep, previousStep, setLocation }) {
   const [place, setPlace] = useState('');
+  const [valid, setValid] = useState('');
 
   const handleFormSubmit = () => {
-    // TODO: Add functionality to make sure the field is filled out. 
-    // TODO: Add functionality to make this a drop down. 
-    setLocation(place);
+    const regex = /[A-Za-z\s]+,\s[A-Za-z]{2}$/;
+    if (!regex.test(place)) {
+      setValid('invalid');
+      return;
+    }
+    // Convert the valid place to make sure that the first characters of the city are capitalized and the state is capitalized.
+    const convertedFormat = place.replace(
+      /^(.+),\s*(\w{2})$/,
+      function (match, city, state) {
+        const capitalizedCity = city.replace(/\b\w/g, function (word) {
+          return word.toUpperCase();
+        });
+        const uppercaseState = state.toUpperCase();
+        return capitalizedCity + ', ' + uppercaseState;
+      }
+    );
+    setValid('valid');
+    setLocation(convertedFormat);
     nextStep();
   };
 
   return (
     <div className='stepContainer'>
       <form className='flex flex-col items-center'>
-        <h1>What city are you based in?</h1>
-        <label className='my-5'>City and State</label>
+        <h1 className='my-5'>What city are you based in?</h1>
+        <p className='mb-4 text-red-500'>
+          {valid === 'invalid'
+            ? 'Please follow the correct format and re-enter your city and state'
+            : ''}{' '}
+        </p>
         <input
-          className='rounded-xl text-center'
+          className={`mt-2 rounded-xl text-center ${valid} ${
+            valid === 'invalid' ? 'border-2 border-red-500' : ''
+          }`}
           type='text'
           name='location'
           placeholder='eg: Brooklyn, NY'
           onChange={(event) => {
+            setValid('validation pending');
             setPlace(event.target.value);
           }}
         />

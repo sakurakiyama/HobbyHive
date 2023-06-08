@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
 import { BsArrowRightCircleFill, BsArrowLeftCircleFill } from 'react-icons/bs';
 
-function StepSeven({ nextStep, previousStep, setPhoto }) {
+function StepSeven({ previousStep, setPhoto }) {
   const [selectedFile, setSelectedFile] = useState('');
+  const [valid, setValid] = useState('');
 
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
   };
 
   const handleFormSubmit = () => {
-    // TODO: Add functionality to make sure there's a file
+    if (selectedFile === '') {
+      setValid('invalid');
+      return;
+    }
+    setValid('valid');
     setPhoto(selectedFile);
   };
 
   return (
     <div className='stepContainer'>
       <form className='flex flex-col items-center'>
-        <h1>Upload a photo</h1>
-        <label className='my-5'>Photo</label>
+        <h1 className='my-5'>Upload a photo</h1>
+        <p className='mb-4 text-red-500'>
+          {valid === 'invalid' ? 'Please upload a photo.' : ''}
+        </p>
         <input type='file' name='file' onChange={changeHandler} />
       </form>
       <div className='flex flex-row justify-between w-full'>
