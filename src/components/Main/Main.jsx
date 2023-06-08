@@ -100,6 +100,13 @@ function Main() {
   return (
     <div>
       <NavBar />
+      <div
+        className={
+          open
+            ? 'w-screen h-screen fixed bg-black opacity-30 backdrop-blur-sm backdrop-filter backdrop-saturate-150 z-[1200]'
+            : ''
+        }
+      ></div>
       <Modal
         open={open}
         onClose={handleClose}
