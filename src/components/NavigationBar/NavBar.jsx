@@ -70,7 +70,7 @@ function NavBar() {
           >
             <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
             <MenuItem onClick={handleCloseDropDown}>My Account</MenuItem>
-            <MenuItem onClick={handleCloseDropDown}>Messages</MenuItem>
+            <MenuItem onClick={handleCloseDropDown}>My Groups</MenuItem>
             <MenuItem onClick={() => exit()}>Logout</MenuItem>
           </Menu>
         </ThemeProvider>
