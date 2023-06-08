@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import StepWizard from 'react-step-wizard';
+import StepOne from './StepOne.jsx';
 import StepTwo from './StepTwo.jsx';
 import StepThree from './StepThree.jsx';
 import StepFour from './StepFour.jsx';
@@ -70,6 +71,7 @@ function CreateProfile({ onClose, setUserData }) {
 
   useEffect(() => {
     if (profileCreated) {
+      console.log(profile);
       const formData = new FormData();
       for (const key in profile) {
         formData.append(key, profile[key]);
@@ -97,6 +99,7 @@ function CreateProfile({ onClose, setUserData }) {
   return (
     <div className='createProfileContainer'>
       <StepWizard>
+        <StepOne />
         <StepTwo setFullName={setFullName} />
         <StepThree setUsername={setUsername} />
         <StepFour setLocation={setLocation} />

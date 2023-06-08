@@ -15,6 +15,7 @@ const getOrCreateUser = require('./middleware/getOrCreateUser');
 const addInterests = require('./middleware/addInterests');
 const profileReady = require('./middleware/profileReady');
 const getInterests = require('./middleware/getInterests');
+const uniqueUsername = require('./middleware/uniqueUsername'); 
 
 module.exports = {
   createProfile,
@@ -22,4 +23,5 @@ module.exports = {
   addInterests,
   profileReady,
   getInterests,
+  uniqueUsername
 };

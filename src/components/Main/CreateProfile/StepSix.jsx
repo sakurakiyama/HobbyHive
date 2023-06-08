@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { BsArrowRightCircleFill } from 'react-icons/bs';
-import { Theme, useTheme } from '@mui/material/styles';
+import { BsArrowRightCircleFill, BsArrowLeftCircleFill } from 'react-icons/bs';
+import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-// import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
 
@@ -58,10 +57,11 @@ function getStyles(name, personName, theme) {
   };
 }
 
-function StepSix({ nextStep, setInterests }) {
+function StepSix({ nextStep, previousStep, setInterests }) {
   const theme = useTheme();
 
   const [hobbies, setHobbies] = useState([]);
+  const [valid, setValid] = useState('');
 
   const handleChange = (event) => {
     const {
@@ -69,18 +69,27 @@ function StepSix({ nextStep, setInterests }) {
     } = event;
     // On autofill we get a stringified value.
     const parsedValue = typeof value === 'string' ? value.split(',') : value;
-    console.log(parsedValue);
     setHobbies(parsedValue);
+    setValid('valid');
   };
 
   const handleFormSubmit = () => {
+    if (!hobbies.length) {
+      setValid('invalid');
+      return;
+    }
     setInterests(hobbies);
     nextStep();
   };
 
   return (
     <div className='stepContainer flex flex-col items-center'>
-      <h1 className='my-5'>Select some hobbies! You can change this later on.</h1>
+      <h1 className='my-5'>
+        Select some hobbies! You can change this later on.
+      </h1>
+      <p className='mb-4 text-red-500'>
+        {valid === 'invalid' ? 'Please select at least one hobby.' : ''}
+      </p>
 
       <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id='demo-multiple-chip-label'>Hobbies</InputLabel>
@@ -112,9 +121,17 @@ function StepSix({ nextStep, setInterests }) {
           ))}
         </Select>
       </FormControl>
-      <div className='flex flex-col items-center'>
+      <div className='flex flex-row justify-between w-full'>
         <button
-          className='mt-5 animate-pulse px-5 py-2 '
+          className='mt-5 animate-pulse px-5 py-2'
+          onClick={() => {
+            previousStep();
+          }}
+        >
+          <BsArrowLeftCircleFill size={30} color={'#e8ac1f'} />
+        </button>
+        <button
+          className='mt-5 animate-pulse px-5 py-2'
           onClick={() => {
             handleFormSubmit();
           }}
