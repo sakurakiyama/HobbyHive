@@ -93,6 +93,7 @@ function CreateProfile({ onClose, setUserData }) {
       createUserProfile();
       onClose();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileCreated]);
 
   return (
