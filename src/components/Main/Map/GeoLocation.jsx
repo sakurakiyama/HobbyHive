@@ -24,8 +24,17 @@ function GeoLocation({ position: { address }, interestClicked }) {
     for (const key in interests) {
       if (!interests[key]) queryData['interests'].push(key);
     }
-    const { data } = await axios.get('/group/getGroups', { params: queryData });
-    return data;
+
+    // If there are any selected interests, find the potential groups
+    if (queryData.interests.length) {
+      const { data } = await axios.get('/group/getGroups', {
+        params: queryData,
+      });
+      return data;
+    }
+
+    // Otherwise, return undefined.
+    return;
   }
 
   useEffect(() => {
@@ -53,12 +62,16 @@ function GeoLocation({ position: { address }, interestClicked }) {
         // Generate markers for each returned group.
         // TODO: Add icons for the interests.
         // TODO: Clear markers when new location is entered.
-        response.forEach((element) => {
-          L.marker([element.lat, element.lon], { icon: markerIcon })
-            .addTo(map)
-            .bindPopup(element.groupname);
-          map.panTo(new L.LatLng(result.lat, result.lon));
-        });
+
+        // If the response is not undefined, interests were selected.
+        if (response) {
+          response.forEach((element) => {
+            L.marker([element.lat, element.lon], { icon: markerIcon })
+              .addTo(map)
+              .bindPopup(element.groupname);
+          });
+        }
+        map.panTo(new L.LatLng(result.lat, result.lon));
       } catch (error) {
         console.log(error);
       }
