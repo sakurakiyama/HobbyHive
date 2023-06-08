@@ -24,7 +24,7 @@ function Interests({ userData, handleClick, interestClicked }) {
                 src={icon}
                 alt={interest}
               ></img>
-              <p className='mt-3 flex flex-col items-center text-slate-500 opacity-40 font-thin'>
+              <p className='xs:text-xs sm:text-xs md:text-base lg:text-base mt-3 flex flex-col items-center text-slate-500 opacity-40 font-thin'>
                 {interest.toUpperCase()}
               </p>
             </div>
