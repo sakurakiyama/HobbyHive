@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 function Interests({ userData, handleClick, interestClicked }) {
-
   return (
     <>
       {userData &&
@@ -10,9 +9,9 @@ function Interests({ userData, handleClick, interestClicked }) {
           const { icon, id, interest } = current;
           return (
             <div
-              key={interest + id}
+              key={id}
               onClick={() => {
-                handleClick(interest + id);
+                handleClick(id);
               }}
             >
               <img
@@ -20,7 +19,7 @@ function Interests({ userData, handleClick, interestClicked }) {
                 hover:translate-y-1
                 w-[10vw] h-auto rounded-full shadow-xl ${
                   // When true, add grayscale class.
-                  interestClicked[interest + id] ? 'grayscale' : ''
+                  interestClicked[id] ? 'grayscale' : ''
                 }`}
                 src={icon}
                 alt={interest}

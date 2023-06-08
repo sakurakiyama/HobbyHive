@@ -20,6 +20,8 @@ const style = {
   borderRadius: 5,
   boxShadow: 24,
   p: 4,
+  // TODO: Don't use this zIndex. Bandaid.
+  zIndex: 9999,
 };
 
 function Main() {
@@ -55,6 +57,15 @@ function Main() {
           else {
             const interests = await axios.get(`/user/getInterests/${data.id}`);
             setUserData({ user: data, interests: interests.data });
+
+            // Create an object to populate the interest selection.
+            const defaultSelected = {};
+
+            interests.data.forEach((interest) => {
+              defaultSelected[interest.id] = false;
+            });
+            setInterestClicked(defaultSelected);
+
             // TODO: Set the user profile picture to the picture they uploaded when they created an account
           }
         } catch (error) {
@@ -135,7 +146,7 @@ function Main() {
       </div>
       {/* Map here */}
       <div>
-        <Map position={position} />
+        <Map position={position} interestClicked={interestClicked} />
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import GeoLocation from './GeoLocation';
 
-function Map({ position }) {
+function Map({ position, interestClicked }) {
   const [latLng, setLatLng] = useState({
     lat: 40.7128,
     lng: -74.006,
@@ -21,7 +21,11 @@ function Map({ position }) {
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
           url='https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png'
         />
-        <GeoLocation position={position} setLatLng={setLatLng} />
+        <GeoLocation
+          position={position}
+          setLatLng={setLatLng}
+          interestClicked={interestClicked}
+        />
       </MapContainer>
     </div>
   );
