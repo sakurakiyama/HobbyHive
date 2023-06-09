@@ -47,6 +47,7 @@ function NavBar() {
     >
       <div className='flex float-left'>
         <img
+          onClick={() => navigate('/')}
           className='w-[300px] h-auto'
           alt='bee hobby hive'
           src={TextLogo}
