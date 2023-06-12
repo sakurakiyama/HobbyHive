@@ -10,7 +10,7 @@ import StepSeven from './StepSeven.jsx';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
-function CreateProfile({ onClose, setUserData }) {
+function CreateProfile({ onClose, setUserData, setInterestClicked }) {
   const { user } = useAuth0();
 
   const defaultProfile = {
@@ -79,12 +79,22 @@ function CreateProfile({ onClose, setUserData }) {
 
       const createUserProfile = async () => {
         try {
-          const response = await axios.post('/user/createProfile', formData, {
+          const { data } = await axios.post('/user/createProfile', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-          setUserData(response.data);
+          setUserData({ user: data.user, interests: data.interests });
+
+          // Create an object to populate the interest selection.
+          const defaultSelected = {};
+
+          data.interests.forEach((interest) => {
+            defaultSelected[interest.id] = false;
+          });
+
+          setInterestClicked(defaultSelected);
+
           // TODO: Set the user profile picture to the picture they uploaded when they created an account
         } catch (error) {
           console.log(error);
@@ -93,11 +103,10 @@ function CreateProfile({ onClose, setUserData }) {
       createUserProfile();
       onClose();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileCreated]);
 
   return (
-    <div className='createProfileContainer'>
+    <div className='createProfileContainer overflow-hidden'>
       <StepWizard>
         <StepOne />
         <StepTwo setFullName={setFullName} />
