@@ -34,7 +34,7 @@ function StepFour({ nextStep, previousStep, setLocation }) {
         <p className='mb-4 text-red-500'>
           {valid === 'invalid'
             ? 'Please follow the correct format and re-enter your city and state'
-            : ''}{' '}
+            : ''}
         </p>
         <input
           className={`mt-2 rounded-xl text-center ${valid} ${
