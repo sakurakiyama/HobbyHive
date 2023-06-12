@@ -23,5 +23,5 @@ module.exports = {
   addInterests,
   profileReady,
   getInterests,
-  uniqueUsername
+  uniqueUsername,
 };

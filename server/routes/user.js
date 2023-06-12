@@ -26,4 +26,16 @@ router.get('/getInterests/:id', userController.getInterests, (req, res) => {
 router.get('/uniqueUsername/', userController.uniqueUsername, (req, res) => {
   return res.status(200).json(res.locals.unique);
 });
+
+router.post(
+  '/getAllUserData',
+  userController.getOrCreateUser,
+  userController.getInterests,
+  (req, res) => {
+    return res
+      .status(200)
+      .json({ user: res.locals.user, interests: res.locals.interests });
+  }
+);
+
 module.exports = router;

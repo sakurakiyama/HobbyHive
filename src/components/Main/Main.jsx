@@ -45,10 +45,9 @@ function Main() {
     else {
       async function sendUser() {
         try {
-          const response = await axios.post('/user/getOrCreateUser', {
+          const { data } = await axios.post('/user/getOrCreateUser', {
             email: user.email,
           });
-          const data = response.data;
           // if the response data doesn't include a bio, open the modal to prompt the user to create a profile
           if (!data.profileready) {
             setOpen(true);
@@ -65,7 +64,6 @@ function Main() {
               defaultSelected[interest.id] = false;
             });
             setInterestClicked(defaultSelected);
-
             // TODO: Set the user profile picture to the picture they uploaded when they created an account
           }
         } catch (error) {
@@ -114,7 +112,11 @@ function Main() {
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
-          <CreateProfile onClose={handleClose} setUserData={setUserData} />
+          <CreateProfile
+            setInterestClicked={setInterestClicked}
+            onClose={handleClose}
+            setUserData={setUserData}
+          />
         </Box>
       </Modal>
       {/* Search bar here */}
