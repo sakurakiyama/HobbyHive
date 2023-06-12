@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BsArrowRightCircleFill, BsArrowLeftCircleFill } from 'react-icons/bs';
+import { convertName } from '../../../utils/userInputValidation';
 
 function StepTwo({ nextStep, previousStep, setFullName }) {
   const [firstName, setFirstName] = useState('');
@@ -25,16 +26,8 @@ function StepTwo({ nextStep, previousStep, setFullName }) {
       return;
     }
 
-    // Convert the first character in the names to upperCase
-    const convert = (name) => {
-      const convertedName = name.replace(/\b\w/g, function (word) {
-        return word.toUpperCase();
-      });
-      return convertedName;
-    };
-
-    const first = convert(firstName);
-    const last = convert(lastName);
+    const first = convertName(firstName);
+    const last = convertName(lastName);
     setValid('valid');
     setFullName(first, last);
     nextStep();

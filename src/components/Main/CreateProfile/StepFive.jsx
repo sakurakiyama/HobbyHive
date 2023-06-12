@@ -5,6 +5,7 @@ function StepFive({ nextStep, previousStep, setBio }) {
   const [description, setDescription] = useState('');
   const [valid, setValid] = useState('');
 
+
   const handleFormSubmit = () => {
     if (description === '') {
       setValid('invalid');

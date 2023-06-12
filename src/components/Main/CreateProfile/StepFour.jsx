@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
 import { BsArrowRightCircleFill, BsArrowLeftCircleFill } from 'react-icons/bs';
+import { convertPlace } from '../../../utils/userInputValidation';
 
 function StepFour({ nextStep, previousStep, setLocation }) {
   const [place, setPlace] = useState('');
   const [valid, setValid] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleFormSubmit = () => {
+    if (place === '') {
+      setValid('invalid');
+      setErrorMessage('Please enter a city and state.');
+      return;
+    }
     const regex = /[A-Za-z\s]+,\s[A-Za-z]{2}$/;
     if (!regex.test(place)) {
       setValid('invalid');
+      setErrorMessage(
+        'Please follow the correct format and re-enter your city and state.'
+      );
       return;
     }
-    // Convert the valid place to make sure that the first characters of the city are capitalized and the state is capitalized.
-    const convertedFormat = place.replace(
-      /^(.+),\s*(\w{2})$/,
-      function (match, city, state) {
-        const capitalizedCity = city.replace(/\b\w/g, function (word) {
-          return word.toUpperCase();
-        });
-        const uppercaseState = state.toUpperCase();
-        return capitalizedCity + ', ' + uppercaseState;
-      }
-    );
+
+    const convertedPlace = convertPlace(place);
     setValid('valid');
-    setLocation(convertedFormat);
+    setLocation(convertedPlace);
     nextStep();
   };
 
@@ -32,9 +33,7 @@ function StepFour({ nextStep, previousStep, setLocation }) {
       <form className='flex flex-col items-center'>
         <h1 className='my-5'>What city are you based in?</h1>
         <p className='mb-4 text-red-500'>
-          {valid === 'invalid'
-            ? 'Please follow the correct format and re-enter your city and state'
-            : ''}
+          {valid === 'invalid' ? `${errorMessage}` : ''}
         </p>
         <input
           className={`mt-2 rounded-xl text-center ${valid} ${
