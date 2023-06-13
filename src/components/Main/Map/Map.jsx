@@ -3,7 +3,7 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import GeoLocation from './GeoLocation';
 
-function Map({ position, interestClicked }) {
+function Map({ position, interestClicked, allInterests }) {
   const [latLng, setLatLng] = useState({
     lat: 40.7128,
     lng: -74.006,
@@ -25,6 +25,7 @@ function Map({ position, interestClicked }) {
           position={position}
           setLatLng={setLatLng}
           interestClicked={interestClicked}
+          allInterests={allInterests}
         />
       </MapContainer>
     </div>

@@ -222,6 +222,8 @@ function Profile() {
       bio: bio,
       city: city,
     });
+
+    // TODO: On save, show user green string 'saved'.
   }
 
   return (

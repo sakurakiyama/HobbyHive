@@ -25,7 +25,7 @@ const style = {
 };
 
 function Main() {
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({ user: null, interests: null });
   const [open, setOpen] = useState(false);
   const [interestClicked, setInterestClicked] = useState({});
   const [inputField, setInputField] = useState([]);
@@ -155,7 +155,11 @@ function Main() {
       </div>
       {/* Map here */}
       <div>
-        <Map position={position} interestClicked={interestClicked} />
+        <Map
+          position={position}
+          interestClicked={interestClicked}
+          allInterests={userData.interests}
+        />
       </div>
     </div>
   );
