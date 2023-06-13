@@ -3,7 +3,15 @@ import NavBar from '../NavigationBar/NavBar.jsx';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Button, Avatar, Typography, Card, Select, Space } from 'antd';
+import {
+  Button,
+  Avatar,
+  Typography,
+  Card,
+  Select,
+  Space,
+  Skeleton,
+} from 'antd';
 import { convertName, convertPlace } from '../../utils/userInputValidation.js';
 
 const { Buffer } = require('buffer');
@@ -30,6 +38,8 @@ function Profile() {
   const [validLocation, setValidLocation] = useState(null);
   const [locationErrorMessage, setLocationErrorMessage] = useState(null);
   const [validInterests, setValidInterests] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const { user } = useAuth0();
 
   const navigate = useNavigate();
@@ -89,6 +99,7 @@ function Profile() {
       const photo = Buffer.from(user.photo).toString('utf-8');
       const dataURI = `data:image/png;base64,${photo}`;
       setPhoto(dataURI);
+      setLoading(false);
     }
   }, [userData]);
 
@@ -231,48 +242,56 @@ function Profile() {
       <NavBar />
       <div className='flex items-center justify-center'>
         <Card style={{ width: 500 }}>
-          <Meta
-            avatar={<Avatar size={75} src={photo} />}
-            title={'@' + username}
-            description={
-              <>
-                First Name:
-                <Paragraph editable={{ onChange: handleFirstName }}>
-                  {firstName}
-                </Paragraph>
-                Last Name:
-                <Paragraph editable={{ onChange: handleLastName }}>
-                  {lastName}
-                </Paragraph>
-                Bio:
-                <Paragraph editable={{ onChange: handleBio }}>{bio}</Paragraph>
-                City:
-                <Paragraph editable={{ onChange: handleLocation }}>
-                  {city}
-                </Paragraph>
-                <div className='text-red-600'>
-                  <p>
-                    {validFirstName === 'invalid'
-                      ? `${firstNameErrorMessage}`
-                      : ''}
-                  </p>
-                  <p>
-                    {validLastName === 'invalid'
-                      ? `${lastNameErrorMessage}`
-                      : ''}
-                  </p>
-                  <p>
-                    {validBio === 'invalid' ? 'Please fill out your bio.' : ''}
-                  </p>
-                  <p>
-                    {validLocation === 'invalid'
-                      ? `${locationErrorMessage}`
-                      : ''}
-                  </p>
-                </div>
-              </>
-            }
-          />
+          <Skeleton active loading={loading}>
+            <Meta
+              avatar={<Avatar size={75} src={photo} />}
+              title={'@' + username}
+              description={
+                <>
+                  {/* <div className='h-4 w-[200px] bg-slate-200 animate-pulse rounded	'></div> */}
+                  First Name:
+                  <Paragraph editable={{ onChange: handleFirstName }}>
+                    {firstName}
+                  </Paragraph>
+                  Last Name:
+                  <Paragraph editable={{ onChange: handleLastName }}>
+                    {lastName}
+                  </Paragraph>
+                  Bio:
+                  <Paragraph editable={{ onChange: handleBio }}>
+                    {bio}
+                  </Paragraph>
+                  City:
+                  <Paragraph editable={{ onChange: handleLocation }}>
+                    {city}
+                  </Paragraph>
+                  <div className='text-red-600'>
+                    <p>
+                      {validFirstName === 'invalid'
+                        ? `${firstNameErrorMessage}`
+                        : ''}
+                    </p>
+                    <p>
+                      {validLastName === 'invalid'
+                        ? `${lastNameErrorMessage}`
+                        : ''}
+                    </p>
+                    <p>
+                      {validBio === 'invalid'
+                        ? 'Please fill out your bio.'
+                        : ''}
+                    </p>
+                    <p>
+                      {validLocation === 'invalid'
+                        ? `${locationErrorMessage}`
+                        : ''}
+                    </p>
+                  </div>
+                </>
+              }
+            />
+          </Skeleton>
+
           <div className='mt-[25px] text-center'>
             {selectedInterests && (
               <Space style={{ width: '80%' }} direction='vertical'>
