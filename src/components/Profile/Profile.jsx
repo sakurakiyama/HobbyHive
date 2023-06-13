@@ -213,8 +213,15 @@ function Profile() {
     );
   }
 
-  function handleSubmit() {
-    console.log(selectedInterests, firstName, lastName, bio, city);
+  async function handleSubmit() {
+    const { data } = await axios.patch('/user/updateProfile', {
+      email: user.email,
+      interests: selectedInterests,
+      firstname: firstName,
+      lastname: lastName,
+      bio: bio,
+      city: city,
+    });
   }
 
   return (

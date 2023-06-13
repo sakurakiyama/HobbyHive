@@ -11,6 +11,7 @@
  */
 
 const userModel = require('../../../models/userModel');
+const { createPlaceholders } = require('../../utils/utils');
 
 /**
  * ====================================
@@ -24,13 +25,14 @@ const addInterests = async (req, res, next) => {
   try {
     const interestValues = interests.split(',');
     // Create placeholders for the query
-    const placeholders = interestValues
-      .map((_, index) => `$${index + 1}`)
-      .join(',');
+    const placeholders = createPlaceholders(interestValues);
 
     // Grab all the ids from the interest table for the interests the user selected
     const getInterestQuery = `SELECT id FROM interests WHERE interest IN (${placeholders})`;
-    const { rows: interestIds } = await userModel.query(getInterestQuery, interestValues);
+    const { rows: interestIds } = await userModel.query(
+      getInterestQuery,
+      interestValues
+    );
 
     // Loop over the interests, executing a query to insert into the userInterests table
     const joinUserInterestsQuery = `INSERT INTO userInterests (user_id, interest_id) VALUES ($1, $2)`;
@@ -38,7 +40,7 @@ const addInterests = async (req, res, next) => {
       const interestId = interest.id;
       await userModel.query(joinUserInterestsQuery, [userId, interestId]);
     }
-    
+
     return next();
   } catch (error) {
     return next({
