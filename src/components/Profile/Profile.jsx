@@ -3,7 +3,7 @@ import NavBar from '../NavigationBar/NavBar.jsx';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Avatar, Typography, Card } from 'antd';
+import { Avatar, Typography, Card, Select, Space } from 'antd';
 import { convertName, convertPlace } from '../../utils/userInputValidation.js';
 
 const { Buffer } = require('buffer');
@@ -11,8 +11,47 @@ const { Buffer } = require('buffer');
 const { Paragraph } = Typography;
 const { Meta } = Card;
 
+const options = [];
+
+const allInterests = [
+  'Biking',
+  'Camping',
+  'Coding',
+  'Playing Dice',
+  'Farming',
+  'Fashion',
+  'Film',
+  'Gaming',
+  'Gardening',
+  'Hiking',
+  'Magic',
+  'Math',
+  'Motorcycling',
+  'Music',
+  'Painting',
+  'Photography',
+  'Racing',
+  'Sailing',
+  'Singing',
+  'Skateboarding',
+  'Spray Painting',
+  'Traveling',
+  'Unicycling',
+  'Videography',
+  'Walking',
+];
+
+for (let i = 0; i < allInterests.length; i++) {
+  options.push({
+    label: allInterests[i],
+    value: allInterests[i],
+  });
+}
+
+// TODO: Add functionality for updating profile picture
 function Profile() {
   const [userData, setUserData] = useState(null);
+  const [selectedInterests, setSelectedInterests] = useState(null);
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [bio, setBio] = useState(null);
@@ -26,7 +65,6 @@ function Profile() {
   const [validBio, setValidBio] = useState(null);
   const [validLocation, setValidLocation] = useState(null);
   const [locationErrorMessage, setLocationErrorMessage] = useState(null);
-
   const { user } = useAuth0();
 
   const navigate = useNavigate();
@@ -44,6 +82,13 @@ function Profile() {
             email: user.email,
           });
           setUserData({ user: data.user, interests: data.interests });
+
+          const interests = data.interests;
+          const selected = [];
+          for (const element of interests) {
+            selected.push(element.interest);
+          }
+          setSelectedInterests(selected);
         } catch (error) {
           console.log(error);
         }
@@ -140,6 +185,10 @@ function Profile() {
     setCity(convertedFormat);
   }
 
+  function changeInterests(value) {
+    setSelectedInterests(value);
+  }
+
   return (
     <div className='profileContainer'>
       <NavBar />
@@ -183,6 +232,20 @@ function Profile() {
                       ? `${locationErrorMessage}`
                       : ''}
                   </p>
+                </div>
+                <div className='mt-[25px]'>
+                  {selectedInterests && (
+                    <Space style={{ width: '100%' }} direction='vertical'>
+                      <Select
+                        mode='multiple'
+                        style={{ width: '100%' }}
+                        placeholder='Please select'
+                        defaultValue={selectedInterests}
+                        onChange={changeInterests}
+                        options={options}
+                      />
+                    </Space>
+                  )}
                 </div>
               </>
             }
