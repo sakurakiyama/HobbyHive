@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsArrowRightCircleFill, BsArrowLeftCircleFill } from 'react-icons/bs';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
+import axios from 'axios';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -19,34 +20,6 @@ const MenuProps = {
     },
   },
 };
-
-const interests = [
-  'Biking',
-  'Camping',
-  'Coding',
-  'Playing Dice',
-  'Farming',
-  'Fashion',
-  'Film',
-  'Gaming',
-  'Gardening',
-  'Hiking',
-  'Magic',
-  'Math',
-  'Motorcycling',
-  'Music',
-  'Painting',
-  'Photography',
-  'Racing',
-  'Sailing',
-  'Singing',
-  'Skateboarding',
-  'Spray Painting',
-  'Traveling',
-  'Unicycling',
-  'Videography',
-  'Walking',
-];
 
 function getStyles(name, personName, theme) {
   return {
@@ -62,6 +35,16 @@ function StepSix({ nextStep, previousStep, setInterests }) {
 
   const [hobbies, setHobbies] = useState([]);
   const [valid, setValid] = useState('');
+  const [allInterests, setAllInterests] = useState(null);
+
+  // Populate the interests from the database
+  useEffect(() => {
+    const getAllInterests = async () => {
+      const { data } = await axios.get('/interests/getInterests');
+      setAllInterests(data);
+    };
+    getAllInterests();
+  }, []);
 
   const handleChange = (event) => {
     const {
@@ -110,15 +93,16 @@ function StepSix({ nextStep, previousStep, setInterests }) {
           )}
           MenuProps={MenuProps}
         >
-          {interests.map((interest) => (
-            <MenuItem
-              key={interest}
-              value={interest}
-              style={getStyles(interest, hobbies, theme)}
-            >
-              {interest}
-            </MenuItem>
-          ))}
+          {allInterests &&
+            allInterests.map((element) => (
+              <MenuItem
+                key={element.interest}
+                value={element.interest}
+                style={getStyles(element, hobbies, theme)}
+              >
+                {element.interest}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
       <div className='flex flex-row justify-between w-full'>
