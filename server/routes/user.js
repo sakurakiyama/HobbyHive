@@ -11,7 +11,7 @@ router.post(
   userController.createProfile,
   userController.addInterests,
   userController.profileReady,
-  userController.getInterests,
+  userController.getUserInterests,
   (req, res) => {
     return res
       .status(200)
@@ -19,7 +19,7 @@ router.post(
   }
 );
 
-router.get('/getInterests/:id', userController.getInterests, (req, res) => {
+router.get('/getInterests/:id', userController.getUserInterests, (req, res) => {
   return res.status(200).json(res.locals.interests);
 });
 
@@ -30,7 +30,7 @@ router.get('/uniqueUsername/', userController.uniqueUsername, (req, res) => {
 router.post(
   '/getAllUserData',
   userController.getOrCreateUser,
-  userController.getInterests,
+  userController.getUserInterests,
   (req, res) => {
     return res
       .status(200)
