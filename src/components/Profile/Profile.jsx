@@ -11,47 +11,11 @@ const { Buffer } = require('buffer');
 const { Paragraph } = Typography;
 const { Meta } = Card;
 
-const options = [];
-
-const allInterests = [
-  'Biking',
-  'Camping',
-  'Coding',
-  'Playing Dice',
-  'Farming',
-  'Fashion',
-  'Film',
-  'Gaming',
-  'Gardening',
-  'Hiking',
-  'Magic',
-  'Math',
-  'Motorcycling',
-  'Music',
-  'Painting',
-  'Photography',
-  'Racing',
-  'Sailing',
-  'Singing',
-  'Skateboarding',
-  'Spray Painting',
-  'Traveling',
-  'Unicycling',
-  'Videography',
-  'Walking',
-];
-
-for (let i = 0; i < allInterests.length; i++) {
-  options.push({
-    label: allInterests[i],
-    value: allInterests[i],
-  });
-}
-
 // TODO: Add functionality for updating profile picture
 function Profile() {
   const [userData, setUserData] = useState(null);
   const [selectedInterests, setSelectedInterests] = useState(null);
+  const [allInterests, setAllInterests] = useState(null);
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [bio, setBio] = useState(null);
@@ -83,12 +47,27 @@ function Profile() {
           });
           setUserData({ user: data.user, interests: data.interests });
 
+          // Set selected interests.
           const interests = data.interests;
           const selected = [];
           for (const element of interests) {
             selected.push(element.interest);
           }
           setSelectedInterests(selected);
+
+          // Set interest options.
+          const response = await axios.get('/interests/getInterests');
+          const allInterests = response.data;
+
+          const options = [];
+
+          for (let i = 0; i < allInterests.length; i++) {
+            options.push({
+              label: allInterests[i].interest,
+              value: allInterests[i].interest,
+            });
+          }
+          setAllInterests(options);
         } catch (error) {
           console.log(error);
         }
@@ -97,6 +76,7 @@ function Profile() {
     }
   }, []);
 
+  // Once the userData state is set, set the input fields with the current user information.
   useEffect(() => {
     if (userData) {
       const { user } = userData;
@@ -111,6 +91,7 @@ function Profile() {
     }
   }, [userData]);
 
+  // Validate first name changes.
   function handleFirstName(name) {
     if (!name) {
       setValidFirstName('invalid');
@@ -132,6 +113,7 @@ function Profile() {
     setFirstName(result);
   }
 
+  // Validate last name changes.
   function handleLastName(name) {
     if (!name) {
       setValidLastName('invalid');
@@ -153,6 +135,7 @@ function Profile() {
     setLastName(result);
   }
 
+  // Validate bio changes.
   function handleBio(bio) {
     if (bio === '') {
       setValidBio('invalid');
@@ -163,6 +146,7 @@ function Profile() {
     setBio(bio);
   }
 
+  // Validate city changes.
   function handleLocation(place) {
     if (place === '') {
       setValidLocation('invalid');
@@ -185,6 +169,7 @@ function Profile() {
     setCity(convertedFormat);
   }
 
+  // Change interests.
   function changeInterests(value) {
     setSelectedInterests(value);
   }
@@ -242,7 +227,7 @@ function Profile() {
                         placeholder='Please select'
                         defaultValue={selectedInterests}
                         onChange={changeInterests}
-                        options={options}
+                        options={allInterests}
                       />
                     </Space>
                   )}
