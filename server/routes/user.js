@@ -38,4 +38,17 @@ router.post(
   }
 );
 
+router.patch(
+  '/updateProfile',
+  userController.updateProfile,
+  userController.getUserInterests,
+  userController.addNewInterests,
+  userController.removeInterests,
+  userController.getUserInterests,
+  (req, res) => {
+    return res
+      .status(200)
+      .json({ user: res.locals.user, interest: res.locals.interests });
+  }
+);
 module.exports = router;
