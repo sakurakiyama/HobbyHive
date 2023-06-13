@@ -5,12 +5,12 @@ import 'leaflet-control-geocoder/dist/Control.Geocoder.js';
 import L from 'leaflet';
 import axios from 'axios';
 
-function GeoLocation({ position: { address }, interestClicked }) {
+function GeoLocation({ position: { address }, interestClicked, allInterests }) {
   const map = useMap();
 
-  const markerIcon = L.icon({
+  let markerIcon = L.icon({
     iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [40, 40],
   });
 
   // Function to get all groups of specified interests within one mile of the search paramater
@@ -22,7 +22,9 @@ function GeoLocation({ position: { address }, interestClicked }) {
     };
 
     for (const key in interests) {
-      if (!interests[key]) queryData['interests'].push(key);
+      if (!interests[key]) {
+        queryData['interests'].push(key);
+      }
     }
 
     // If there are any selected interests, find the potential groups
@@ -60,12 +62,20 @@ function GeoLocation({ position: { address }, interestClicked }) {
         );
 
         // Generate markers for each returned group.
-        // TODO: Add icons for the interests.
         // TODO: Clear markers when new location is entered.
 
         // If the response is not undefined, interests were selected.
         if (response) {
           response.forEach((element) => {
+            const interestId = element.interest_id;
+            const interestObject = allInterests.find(
+              (obj) => obj.id === interestId
+            );
+            markerIcon = L.icon({
+              iconUrl: interestObject.icon,
+              iconSize: [40, 40],
+            });
+
             L.marker([element.lat, element.lon], { icon: markerIcon })
               .addTo(map)
               .bindPopup(element.groupname);
