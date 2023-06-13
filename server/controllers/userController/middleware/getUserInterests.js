@@ -1,7 +1,7 @@
 /**
  * **************************************************
  *
- * @module userController.getUserAndInterests
+ * @module userController.getUserInterests
  *
  * @description
  * This controller middleware is used to get the
@@ -18,7 +18,7 @@ const userModel = require('../../../models/userModel');
  * ====================================
  */
 
-const getInterests = async (req, res, next) => {
+const getUserInterests = async (req, res, next) => {
   const userId = !res.locals.user ? req.params.id : res.locals.user.id;
   const userQuery = `
   SELECT interests.id, interests.interest, interests.icon 
@@ -39,4 +39,4 @@ const getInterests = async (req, res, next) => {
   }
 };
 
-module.exports = getInterests;
+module.exports = getUserInterests;
