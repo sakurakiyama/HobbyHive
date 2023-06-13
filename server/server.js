@@ -8,6 +8,7 @@ const formidable = require('express-formidable');
 // routers
 const userRouter = require('./routes/user');
 const groupRouter = require('./routes/group');
+const interestRouter = require('./routes/interests');
 
 app.use((req, res, next) => {
   if (req.is('multipart/form-data')) {
@@ -29,6 +30,7 @@ app.use(express.static(path.resolve(__dirname, '../src')));
 // route handlers
 app.use('/user', userRouter);
 app.use('/group', groupRouter);
+app.use('/interests', interestRouter);
 
 // catch-all error handler
 app.get('*', (req, res) => {

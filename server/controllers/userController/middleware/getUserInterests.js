@@ -32,7 +32,7 @@ const getUserInterests = async (req, res, next) => {
     return next();
   } catch (error) {
     return next({
-      log: `Error occurred in userController.getInterests middleware ${error}`,
+      log: `Error occurred in userController.getUserInterests middleware ${error}`,
       status: 400,
       message: { error: 'Unable to get users interests' },
     });
