@@ -3,7 +3,7 @@ import NavBar from '../NavigationBar/NavBar.jsx';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Avatar, Typography, Card, Select, Space } from 'antd';
+import { Button, Avatar, Typography, Card, Select, Space } from 'antd';
 import { convertName, convertPlace } from '../../utils/userInputValidation.js';
 
 const { Buffer } = require('buffer');
@@ -29,6 +29,7 @@ function Profile() {
   const [validBio, setValidBio] = useState(null);
   const [validLocation, setValidLocation] = useState(null);
   const [locationErrorMessage, setLocationErrorMessage] = useState(null);
+  const [validInterests, setValidInterests] = useState(null);
   const { user } = useAuth0();
 
   const navigate = useNavigate();
@@ -96,8 +97,13 @@ function Profile() {
     if (!name) {
       setValidFirstName('invalid');
       setFirstNameErrorMessage('Please enter a first name.');
+
+      setTimeout(() => {
+        setValidFirstName('valid');
+      }, 2000);
       return;
     }
+
     const regex = /^[a-zA-Z]+$/;
 
     if (!regex.test(name)) {
@@ -105,6 +111,9 @@ function Profile() {
       setFirstNameErrorMessage(
         'First names cannot contain any special characters.'
       );
+      setTimeout(() => {
+        setValidFirstName('valid');
+      }, 2000);
       return;
     }
 
@@ -118,6 +127,9 @@ function Profile() {
     if (!name) {
       setValidLastName('invalid');
       setLastNameErrorMessage('Please enter a last name.');
+      setTimeout(() => {
+        setValidLastName('valid');
+      }, 2000);
       return;
     }
     const regex = /^[a-zA-Z]+$/;
@@ -127,6 +139,9 @@ function Profile() {
       setLastNameErrorMessage(
         'Last names cannot contain any special characters.'
       );
+      setTimeout(() => {
+        setValidLastName('valid');
+      }, 2000);
       return;
     }
 
@@ -139,7 +154,9 @@ function Profile() {
   function handleBio(bio) {
     if (bio === '') {
       setValidBio('invalid');
-      setBio('');
+      setTimeout(() => {
+        setValidBio('valid');
+      }, 2000);
       return;
     }
     setValidBio('valid');
@@ -151,6 +168,9 @@ function Profile() {
     if (place === '') {
       setValidLocation('invalid');
       setLocationErrorMessage('Please enter a location');
+      setTimeout(() => {
+        setValidLocation('valid');
+      }, 2000);
       return;
     }
 
@@ -160,7 +180,9 @@ function Profile() {
       setLocationErrorMessage(
         'Please follow the correct format and re-enter your city and state'
       );
-
+      setTimeout(() => {
+        setValidLocation('valid');
+      }, 2000);
       return;
     }
 
@@ -169,9 +191,30 @@ function Profile() {
     setCity(convertedFormat);
   }
 
-  // Change interests.
-  function changeInterests(value) {
-    setSelectedInterests(value);
+  // Add an interest.
+  function addInterest(value) {
+    setSelectedInterests([...selectedInterests, value]);
+  }
+
+  // Remove an interest.
+  function removeInterest(value) {
+    // If there's only one item in the list, it cannot be removed.
+    if (selectedInterests.length <= 1) {
+      setValidInterests('invalid');
+      setTimeout(() => {
+        setValidInterests('valid');
+      }, 2000);
+      return;
+    }
+    setSelectedInterests(
+      selectedInterests.filter((element) => {
+        return element !== value;
+      })
+    );
+  }
+
+  function handleSubmit() {
+    console.log(selectedInterests, firstName, lastName, bio, city);
   }
 
   return (
@@ -218,24 +261,38 @@ function Profile() {
                       : ''}
                   </p>
                 </div>
-                <div className='mt-[25px]'>
-                  {selectedInterests && (
-                    <Space style={{ width: '100%' }} direction='vertical'>
-                      <Select
-                        mode='multiple'
-                        style={{ width: '100%' }}
-                        placeholder='Please select'
-                        defaultValue={selectedInterests}
-                        onChange={changeInterests}
-                        options={allInterests}
-                      />
-                    </Space>
-                  )}
-                </div>
               </>
             }
           />
+          <div className='mt-[25px] text-center'>
+            {selectedInterests && (
+              <Space style={{ width: '80%' }} direction='vertical'>
+                <Select
+                  mode='multiple'
+                  style={{ width: '100%' }}
+                  placeholder='Please select'
+                  value={selectedInterests}
+                  onDeselect={removeInterest}
+                  onSelect={addInterest}
+                  options={allInterests}
+                />
+              </Space>
+            )}
+            <p className='text-red-600'>
+              {validInterests === 'invalid'
+                ? 'You must select at least one interest'
+                : ''}
+            </p>
+          </div>
         </Card>
+      </div>
+      <div className='text-center mt-[25px]'>
+        <Button
+          style={{ background: 'white', borderColor: 'grey' }}
+          onClick={handleSubmit}
+        >
+          Save
+        </Button>
       </div>
     </div>
   );
