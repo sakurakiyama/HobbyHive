@@ -10,7 +10,7 @@
  * **************************************************
  */
 
-const userModel = require('../../../models/userModel');
+const db = require('../../../models/db');
 
 /**
  * ====================================
@@ -26,7 +26,7 @@ const getUserInterests = async (req, res, next) => {
   JOIN userinterests ON userinterests.interest_id = interests.id 
   WHERE userinterests.user_id = $1`;
 
-  const { rows } = await userModel.query(userQuery, [userId]);
+  const { rows } = await db.query(userQuery, [userId]);
   res.locals.interests = !rows.length ? [] : rows;
   try {
     return next();

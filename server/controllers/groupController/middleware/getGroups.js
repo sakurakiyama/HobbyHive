@@ -10,7 +10,7 @@
  * **************************************************
  */
 
-const userModel = require('../../../models/userModel');
+const db = require('../../../models/db');
 
 /**
  * ====================================
@@ -21,7 +21,6 @@ const userModel = require('../../../models/userModel');
 const getGroups = async (req, res, next) => {
   try {
     const data = req.query;
-
     const interestIds = data.interests;
     // Create placeholders for the query
     const placeholders = interestIds
@@ -38,7 +37,7 @@ const getGroups = async (req, res, next) => {
     ) <= 1
     AND interest_id IN (${placeholders})`;
 
-    const { rows } = await userModel.query(groupQuery, interestIds);
+    const { rows } = await db.query(groupQuery, interestIds);
     res.locals.groups = rows;
 
     return next();

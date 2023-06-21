@@ -10,7 +10,7 @@
  * **************************************************
  */
 
-const userModel = require('../../../models/userModel');
+const db = require('../../../models/db');
 const { createPlaceholders } = require('../../utils/utils');
 
 /**
@@ -29,7 +29,7 @@ const addInterests = async (req, res, next) => {
 
     // Grab all the ids from the interest table for the interests the user selected
     const getInterestQuery = `SELECT id FROM interests WHERE interest IN (${placeholders})`;
-    const { rows: interestIds } = await userModel.query(
+    const { rows: interestIds } = await db.query(
       getInterestQuery,
       interestValues
     );
@@ -38,7 +38,7 @@ const addInterests = async (req, res, next) => {
     const joinUserInterestsQuery = `INSERT INTO userInterests (user_id, interest_id) VALUES ($1, $2)`;
     for (const interest of interestIds) {
       const interestId = interest.id;
-      await userModel.query(joinUserInterestsQuery, [userId, interestId]);
+      await db.query(joinUserInterestsQuery, [userId, interestId]);
     }
 
     return next();

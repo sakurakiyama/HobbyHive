@@ -10,7 +10,7 @@
  * **************************************************
  */
 
-const userModel = require('../../../models/userModel');
+const db = require('../../../models/db');
 
 /**
  * ====================================
@@ -24,7 +24,7 @@ const profileReady = async (req, res, next) => {
   try {
     const updateReadyQuery = `UPDATE users SET profileready = $1 WHERE id = $2`;
     const data = [isReady, userId];
-    await userModel.query(updateReadyQuery, data);
+    await db.query(updateReadyQuery, data);
     return next();
   } catch (error) {
     return next({
