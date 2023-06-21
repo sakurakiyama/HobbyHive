@@ -10,7 +10,7 @@
  * **************************************************
  */
 
-const userModel = require('../../../models/userModel');
+const db = require('../../../models/db');
 
 /**
  * ====================================
@@ -22,7 +22,7 @@ const getOrCreateUser = async (req, res, next) => {
   const { email } = req.body;
   try {
     const getUserQuery = 'SELECT * from users WHERE email = $1';
-    const { rows } = await userModel.query(getUserQuery, [email]);
+    const { rows } = await db.query(getUserQuery, [email]);
     let user = rows[0];
     if (user) {
       res.locals.user = user;
@@ -30,7 +30,7 @@ const getOrCreateUser = async (req, res, next) => {
     } else {
       const createUserQuery =
         'INSERT INTO users (email) VALUES ($1) RETURNING *';
-      const { rows } = await userModel.query(createUserQuery, [email]);
+      const { rows } = await db.query(createUserQuery, [email]);
       user = rows[0];
       res.locals.user = user;
       return next();

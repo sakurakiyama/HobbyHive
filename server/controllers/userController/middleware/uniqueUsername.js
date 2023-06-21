@@ -10,7 +10,7 @@
  * **************************************************
  */
 
-const userModel = require('../../../models/userModel');
+const db = require('../../../models/db');
 
 /**
  * ====================================
@@ -23,7 +23,7 @@ const uniqueUsername = async (req, res, next) => {
     const { username } = req.query;
 
     const uniqueQuery = `SELECT * FROM users WHERE username = $1`;
-    const { rows } = await userModel.query(uniqueQuery, [username]);
+    const { rows } = await db.query(uniqueQuery, [username]);
 
     res.locals.unique = !rows.length ? true : false;
     return next();

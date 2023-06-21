@@ -10,7 +10,7 @@
  * **************************************************
  */
 
-const userModel = require('../../../models/userModel');
+const db = require('../../../models/db');
 
 /**
  * ====================================
@@ -34,7 +34,7 @@ const removeInterests = async (req, res, next) => {
 
       for (const interest of toDelete) {
         const interestId = interest.id;
-        await userModel.query(deleteQuery, [userId, interestId]);
+        await db.query(deleteQuery, [userId, interestId]);
       }
     }
 

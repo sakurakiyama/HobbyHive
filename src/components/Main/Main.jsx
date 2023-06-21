@@ -159,6 +159,7 @@ function Main() {
           position={position}
           interestClicked={interestClicked}
           allInterests={userData.interests}
+          userData={userData.user}
         />
       </div>
     </div>

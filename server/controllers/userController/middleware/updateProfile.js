@@ -10,7 +10,7 @@
  * **************************************************
  */
 
-const userModel = require('../../../models/userModel');
+const db = require('../../../models/db');
 
 /**
  * ====================================
@@ -25,7 +25,7 @@ const updateProfile = async (req, res, next) => {
     const updateProfileQuery =
       'UPDATE users SET firstname=$1, lastname=$2, bio=$3, city=$4 WHERE email=$5 RETURNING *';
 
-    const { rows } = await userModel.query(updateProfileQuery, [
+    const { rows } = await db.query(updateProfileQuery, [
       firstname,
       lastname,
       bio,

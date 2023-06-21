@@ -10,7 +10,7 @@
  * **************************************************
  */
 
-const userModel = require('../../../models/userModel');
+const db = require('../../../models/db');
 
 /**
  * ====================================
@@ -21,7 +21,7 @@ const userModel = require('../../../models/userModel');
 const getInterests = async (req, res, next) => {
   try {
     const interestQuery = 'SELECT * FROM interests';
-    const { rows } = await userModel.query(interestQuery);
+    const { rows } = await db.query(interestQuery);
     res.locals.interests = rows;
 
     return next();

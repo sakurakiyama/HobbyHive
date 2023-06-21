@@ -10,7 +10,7 @@
  * **************************************************
  */
 
-const userModel = require('../../../models/userModel');
+const db = require('../../../models/db');
 const fs = require('fs');
 
 /**
@@ -67,7 +67,7 @@ const createProfile = async (req, res, next) => {
     ];
 
     // Add the user's profile information to the database
-    const response = await userModel.query(createProfileQuery, userData);
+    const response = await db.query(createProfileQuery, userData);
     res.locals.user = response.rows[0];
     return next();
   } catch (error) {
