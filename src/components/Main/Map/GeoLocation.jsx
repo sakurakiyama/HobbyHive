@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useMap } from 'react-leaflet';
+import { useEffect, useState } from 'react';
+import { useMap, Marker, Popup } from 'react-leaflet';
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
 import 'leaflet-control-geocoder/dist/Control.Geocoder.js';
 import L from 'leaflet';
@@ -7,11 +7,7 @@ import axios from 'axios';
 
 function GeoLocation({ position: { address }, interestClicked, allInterests }) {
   const map = useMap();
-
-  let markerIcon = L.icon({
-    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-    iconSize: [40, 40],
-  });
+  const [groups, setGroups] = useState([]);
 
   // Function to get all groups of specified interests within one mile of the search paramater
   async function getGroups(interests, lat, lon) {
@@ -54,6 +50,7 @@ function GeoLocation({ position: { address }, interestClicked, allInterests }) {
         );
 
         const result = data[0];
+        // setPanTo(result);
 
         const response = await getGroups(
           interestClicked,
@@ -61,27 +58,10 @@ function GeoLocation({ position: { address }, interestClicked, allInterests }) {
           result.lon
         );
 
+        map.panTo(new L.LatLng(result.lat, result.lon));
+        setGroups(response);
         // Generate markers for each returned group.
         // TODO: Clear markers when new location is entered.
-
-        // If the response is not undefined, interests were selected.
-        if (response) {
-          response.forEach((element) => {
-            const interestId = element.interest_id;
-            const interestObject = allInterests.find(
-              (obj) => obj.id === interestId
-            );
-            markerIcon = L.icon({
-              iconUrl: interestObject.icon,
-              iconSize: [40, 40],
-            });
-
-            L.marker([element.lat, element.lon], { icon: markerIcon })
-              .addTo(map)
-              .bindPopup(element.groupname);
-          });
-        }
-        map.panTo(new L.LatLng(result.lat, result.lon));
       } catch (error) {
         console.log(error);
       }
@@ -89,7 +69,37 @@ function GeoLocation({ position: { address }, interestClicked, allInterests }) {
     getLocation();
   }, [address, interestClicked]);
 
-  return null;
+  return (
+    <>
+      {groups &&
+        groups.map((element) => {
+          const interestId = element.interest_id;
+          const interestObject = allInterests.find(
+            (obj) => obj.id === interestId
+          );
+
+          const markerIcon = L.icon({
+            iconUrl: interestObject.icon,
+            iconSize: [40, 40],
+          });
+
+          return (
+            <Marker
+              position={[element.lat, element.lon]}
+              icon={markerIcon}
+              key={element.id}
+            >
+              <Popup>
+                <div>
+                  <p>{element.groupname}</p>
+                  <button>Click me</button>
+                </div>
+              </Popup>
+            </Marker>
+          );
+        })}
+    </>
+  );
 }
 
 export default GeoLocation;
