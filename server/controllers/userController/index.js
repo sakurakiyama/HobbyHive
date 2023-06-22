@@ -20,6 +20,7 @@ const updateProfile = require('./middleware/updateProfile');
 const updateUserInterests = require('./middleware/removeInterests');
 const addNewInterests = require('./middleware/addNewInterests');
 const removeInterests = require('./middleware/removeInterests');
+const getUserGroups = require('../userController/middleware/getUserGroups.js');
 
 module.exports = {
   createProfile,
@@ -32,4 +33,5 @@ module.exports = {
   updateUserInterests,
   addNewInterests,
   removeInterests,
+  getUserGroups,
 };
