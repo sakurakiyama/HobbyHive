@@ -57,19 +57,22 @@ function GeoLocation({
   // Opens the modal and updates state so relevant information can be displayed
   function handleOpen(key) {
     const current = groups.find((obj) => obj.id === key);
-    const joined = userGroups.find((obj) => obj.group_id === current.id);
-
-    if (joined) {
-      setJoinButton('Go to my groups');
-    } else {
+    if (!userGroups) {
       setJoinButton('Join group');
+    } else {
+      const joined = userGroups.find((obj) => obj.group_id === current.id);
+      if (joined) {
+        setJoinButton('Go to my groups');
+      } else {
+        setJoinButton('Join group');
+      }
     }
     setSelectedGroup(current);
     setOpen(true);
   }
 
   // Join a group
-  async function joinGroup(groupID) {
+  async function joinGroup(groupID, interestID) {
     try {
       if (joinButton === 'Join group') {
         const info = {
@@ -150,7 +153,7 @@ function GeoLocation({
     // Get the users groups
     async function getUserGroups() {
       try {
-        const { data } = await axios(`/group/getUserGroups/${userData.id}`);
+        const { data } = await axios(`/user/getUserGroups/${userData.id}`);
         setUserGroups(data);
       } catch (error) {
         console.log(error);
@@ -217,7 +220,9 @@ function GeoLocation({
               <p>Founded on: {formatDate(selectedGroup.created_at)}</p>
               <Button
                 style={{ background: 'white', borderColor: 'grey' }}
-                onClick={() => joinGroup(selectedGroup.id)}
+                onClick={() =>
+                  joinGroup(selectedGroup.id, selectedGroup.interest_id)
+                }
               >
                 {joinButton}
               </Button>

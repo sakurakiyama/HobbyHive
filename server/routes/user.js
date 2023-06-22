@@ -31,10 +31,14 @@ router.post(
   '/getAllUserData',
   userController.getOrCreateUser,
   userController.getUserInterests,
+  userController.getUserGroups,
   (req, res) => {
-    return res
-      .status(200)
-      .json({ user: res.locals.user, interests: res.locals.interests });
+    return res.status(200).json({
+      user: res.locals.user,
+      interests: res.locals.interests,
+      groups: res.locals.userGroups,
+      groupInfo: res.locals.groupInfo,
+    });
   }
 );
 
@@ -51,4 +55,9 @@ router.patch(
       .json({ user: res.locals.user, interest: res.locals.interests });
   }
 );
+
+router.get('/getUserGroups/:id', userController.getUserGroups, (req, res) => {
+  return res.status(200).json(res.locals.userGroups);
+});
+
 module.exports = router;

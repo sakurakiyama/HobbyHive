@@ -10,8 +10,8 @@ router.put('/joinGroup', groupController.joinGroup, (req, res) => {
   return res.status(200).json(res.locals.joined);
 });
 
-router.get('/getUserGroups/:id', groupController.getUserGroups, (req, res) => {
-  return res.status(200).json(res.locals.userGroups);
+router.get('/getMembers/:id', groupController.getMembers, (req, res) => {
+  return res.status(200).json(res.locals.members);
 });
 
 module.exports = router;
