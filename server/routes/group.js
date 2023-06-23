@@ -14,4 +14,11 @@ router.get('/getMembers/:id', groupController.getMembers, (req, res) => {
   return res.status(200).json(res.locals.members);
 });
 
+router.get('/getEvents/:id', groupController.getEvents, (req, res) => {
+  return res.status(200).json(res.locals.events);
+});
+
+router.patch('/postMessage', groupController.postMessage, (req, res) => {
+  // return res.status(200).json(res.locals.events);
+});
 module.exports = router;

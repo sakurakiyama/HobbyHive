@@ -1,40 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from '../NavigationBar/NavBar.jsx';
-// import {
-//   LaptopOutlined,
-//   NotificationOutlined,
-//   UserOutlined,
-// } from '@ant-design/icons';
-import {
-  Input,
-  Layout,
-  Menu,
-  theme,
-  Avatar,
-  Calendar,
-  Divider,
-  Skeleton,
-  List,
-} from 'antd';
+import { Input, Layout, Menu, theme } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-
-const { Buffer } = require('buffer');
+import GenerateCalendar from './GenerateCalendar.jsx';
+import MessageBoard from './MessageBoard.jsx';
+import GenerateMembers from './GenerateMembers.jsx';
 
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
-const { TextArea } = Input;
-
-/*
-[] TODO: Map over all the users groups and populate the menu. 
-[] TODO: For each menu, populate the following sub navigations: 
-    [] Chat
-    [] Calendar
-    [] Members
-
-*/
 
 let navigation = null;
 
@@ -46,112 +21,10 @@ function UserGroups() {
   });
   const [groupData, setGroupData] = useState(null);
   const [userInterests, setUserInterests] = useState({ interests: null });
-  const [content, setContent] = useState(null);
+  const [currentGroup, setCurrentGroup] = useState(null);
+  const [condition, setCondition] = useState(null);
 
   const subHeaders = ['Chat', 'Calendar', 'Members'];
-
-  // Once you have the data, populate the sidebar.
-  useEffect(() => {
-    const groups = userData.groups;
-
-    navigation =
-      groups &&
-      groups.map((element, index) => {
-        const key = index + 1;
-        // Grab the information about this specific group
-        const groupId = element.group_id;
-        const groupInfo = groupData.find((obj) => obj.id === groupId);
-        return {
-          key: `sub${key}`,
-          //   icon:
-          label: groupInfo.groupname,
-          children: new Array(groupData.length).fill(null).map((_, j) => {
-            const subKey = index * groupData.length + j + 1;
-            return {
-              key: subKey,
-              onClick: () => {
-                handleClick(groupId, subHeaders[j]);
-              },
-              label: subHeaders[j],
-            };
-          }),
-        };
-      });
-  }, [userData]);
-
-  async function handleClick(groupId, condition) {
-    try {
-      // If the condition is Members,
-      if (condition === 'Members') {
-        const { data: members } = await axios.get(
-          `/group/getMembers/${groupId}`
-        );
-        const groupMembers = members.map((user) => {
-          const photo = Buffer.from(user.photo).toString('utf-8');
-          const dataURI = `data:image/png;base64,${photo}`;
-          return (
-            <div className='m-1'>
-              <Avatar size={75} src={dataURI} />
-            </div>
-          );
-        });
-        setContent(groupMembers);
-      }
-      // Otherwise, if the condition is Calendar,
-      else if (condition === 'Calendar') {
-        // TODO: Make this calendar personal to the group
-        const calendar = <Calendar />;
-        setContent(calendar);
-      }
-      // Otherwise, if the condition is Chat.
-      else if (condition === 'Chat') {
-        const chatBox = (
-          <div className='flex flex-col w-full space-y-4'>
-            <div
-              id='scrollableDiv'
-              style={{
-                height: 400,
-                overflow: 'auto',
-                padding: '0 16px',
-                border: '1px solid rgba(140, 140, 140, 0.35)',
-              }}
-            >
-              <InfiniteScroll
-                dataLength={50}
-                // next={loadMoreData}
-                hasMore={20 < 50}
-                loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-                endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-                scrollableTarget='scrollableDiv'
-              >
-                <List
-                  dataSource={'greeting'}
-                  renderItem={(item) => (
-                    <List.Item key={'not special'}>
-                      <List.Item.Meta
-                        // avatar={<Avatar src={item.picture.large} />}
-                        title='hello'
-                        description={'goodbye'}
-                      />
-                      <div>Content</div>
-                    </List.Item>
-                  )}
-                />
-              </InfiniteScroll>
-            </div>
-            <TextArea
-              rows={4}
-              placeholder='Enter your message here'
-              maxLength={6}
-            />
-          </div>
-        );
-        setContent(chatBox);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const { user } = useAuth0();
   const navigate = useNavigate();
@@ -194,6 +67,36 @@ function UserGroups() {
     }
   }, []);
 
+  // Once you have the data, populate the sidebar.
+  useEffect(() => {
+    const groups = userData.groups;
+
+    navigation =
+      groups &&
+      groups.map((element, index) => {
+        const key = index + 1;
+        // Grab the information about this specific group
+        const groupId = element.group_id;
+        const groupInfo = groupData.find((obj) => obj.id === groupId);
+        return {
+          key: `sub${key}`,
+          //   icon:
+          label: groupInfo.groupname,
+          children: new Array(groupData.length).fill(null).map((_, j) => {
+            const subKey = index * groupData.length + j + 1;
+            return {
+              key: subKey,
+              onClick: () => {
+                setCondition(subHeaders[j]);
+                setCurrentGroup(groupId);
+              },
+              label: subHeaders[j],
+            };
+          }),
+        };
+      });
+  }, [userData]);
+
   return (
     <div>
       <div>
@@ -226,7 +129,20 @@ function UserGroups() {
                   background: colorBgContainer,
                 }}
               >
-                <div className='flex'>{content}</div>
+                <div className='flex'>
+                  {condition === 'Calendar' && currentGroup && (
+                    <GenerateCalendar groupId={currentGroup} />
+                  )}
+                  {condition === 'Members' && currentGroup && (
+                    <GenerateMembers groupId={currentGroup} />
+                  )}
+                  {condition === 'Chat' && currentGroup && (
+                    <MessageBoard
+                      groupId={currentGroup}
+                      userData={userData.user}
+                    />
+                  )}
+                </div>
               </Content>
             </Layout>
           </Layout>
