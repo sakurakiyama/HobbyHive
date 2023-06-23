@@ -19,6 +19,7 @@
     "buffer": "^6.0.3",
     "concurrently": "^8.0.1",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.8",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-formidable": "^1.2.0",
@@ -41,6 +42,7 @@
     "react-speech-kit": "^3.0.1",
     "react-step-wizard": "^5.3.11",
     "react-text-transition": "^3.1.0",
+    "redis": "^4.6.7",
     "sass": "^1.62.1",
     "tailwindcss": "^3.3.2",
     "web-vitals": "^2.1.4"
