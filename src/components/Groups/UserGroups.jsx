@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from '../NavigationBar/NavBar.jsx';
-import { Input, Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme, Button } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -8,8 +8,7 @@ import GenerateCalendar from './GenerateCalendar.jsx';
 import MessageBoard from './MessageBoard.jsx';
 import GenerateMembers from './GenerateMembers.jsx';
 
-const { Header, Content, Sider } = Layout;
-const { Search } = Input;
+const { Content, Sider } = Layout;
 
 let navigation = null;
 
@@ -23,7 +22,6 @@ function UserGroups() {
   const [userInterests, setUserInterests] = useState({ interests: null });
   const [currentGroup, setCurrentGroup] = useState(null);
   const [condition, setCondition] = useState(null);
-
   const subHeaders = ['Chat', 'Calendar', 'Members'];
 
   const { user } = useAuth0();
@@ -32,8 +30,6 @@ function UserGroups() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
-  const onSearch = (value) => console.log(value);
 
   useEffect(() => {
     // If the user is not logged in, redirect them to the landing page
@@ -104,21 +100,17 @@ function UserGroups() {
       </div>
       <div>
         <Layout style={{ padding: '24px 24px 24px' }}>
-          <Header style={{ display: 'flex', alignItems: 'center' }}>
-            <Search
-              placeholder='search groups'
-              allowClear
-              onSearch={onSearch}
-              style={{ width: 200 }}
-            />
-          </Header>
           <Layout>
             <Sider width={200}>
-              <Menu
-                mode='inline'
-                style={{ height: '100%', borderRight: 0 }}
-                items={navigation}
-              />
+              <div className='flex flex-col h-full bg-white'>
+                <Button className='mt-5 mb-4 mx-3'>Create Group </Button>
+
+                <Menu
+                  mode='inline'
+                  style={{ height: '100%', borderRight: 0 }}
+                  items={navigation}
+                />
+              </div>
             </Sider>
             <Layout style={{ padding: '24px 24px 24px' }}>
               <Content
