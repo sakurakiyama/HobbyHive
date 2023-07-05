@@ -5,6 +5,13 @@ import { formatDate } from '../../utils/formatDate.js';
 import { Modal } from '@mui/base';
 import { Box } from '@mui/material';
 
+/*
+TODO: 
+[] Add functionality to add new events 
+[] Add functionality to add events to your own calendar
+[] Add functionality to RSVP to events
+*/
+
 const style = {
   position: 'fixed',
   top: '50%',
@@ -18,7 +25,7 @@ const style = {
   zIndex: 1200,
 };
 
-const SubmitButton = ({ form, groupId }) => {
+function SubmitButton({ form, groupId }) {
   const [submittable, setSubmittable] = useState(false);
 
   // Watch all values
@@ -53,7 +60,7 @@ const SubmitButton = ({ form, groupId }) => {
       Submit
     </Button>
   );
-};
+}
 
 function GenerateCalendar({ groupId }) {
   const [allEvents, setAllEvents] = useState(null);
@@ -61,9 +68,9 @@ function GenerateCalendar({ groupId }) {
 
   const [form] = Form.useForm();
 
-  const handleClose = () => {
+  function handleClose() {
     setOpen(false);
-  };
+  }
 
   function handleOpen() {
     setOpen(true);
@@ -98,7 +105,7 @@ function GenerateCalendar({ groupId }) {
     );
   };
 
-  const monthCellRender = (value) => {
+  function monthCellRender(value) {
     const current = new Date(value);
     const currentMonth = current.getMonth();
 
@@ -117,12 +124,12 @@ function GenerateCalendar({ groupId }) {
         })}
       </ul>
     );
-  };
+  }
 
-  const cellRender = (current, info) => {
+  function cellRender(current, info) {
     if (info.type === 'date') return dateCellRender(current);
     if (info.type === 'month') return monthCellRender(current);
-  };
+  }
 
   return (
     <>

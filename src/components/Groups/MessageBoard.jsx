@@ -9,12 +9,9 @@ const { io } = require('socket.io-client');
 const socket = io('ws://localhost:3333');
 
 /*
-[] TODO: Map over all the users groups and populate the menu. 
-[] TODO: For each menu, populate the following sub navigations: 
-    [] Chat
-    [] Calendar
-    [] Members
-
+TODO: 
+[] Add functionality to show time of sent message
+[] Add functionality to show badge when new messages come in 
 */
 
 const { TextArea } = Input;

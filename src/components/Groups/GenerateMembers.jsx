@@ -3,6 +3,12 @@ import axios from 'axios';
 import { Avatar } from 'antd';
 const { Buffer } = require('buffer');
 
+/*
+TODO: 
+[] Add functionality to hover over users for their information.
+[] Add functionality to private message users.
+*/
+
 function GenerateMembers({ groupId }) {
   const [groupMembers, setGroupMembers] = useState(null);
 
