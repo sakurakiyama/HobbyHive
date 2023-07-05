@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from 'antd';
 import axios from 'axios';
-import { Divider, Skeleton, List, Button } from 'antd';
+import { Avatar, Divider, Skeleton, List, Button } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
+const { Buffer } = require('buffer');
 
 const { io } = require('socket.io-client');
 const socket = io('ws://localhost:3333');
@@ -23,39 +24,36 @@ function MessageBoard({ groupId, userData }) {
   const [allMessages, setAllMessages] = useState(null);
   const [allMembers, setAllMembers] = useState(null);
 
+  async function getAllMessages(groupId) {
+    const { data: groupMessages } = await axios(
+      `/group/getMessages/${groupId}`
+    );
+    const messages = [];
+    const members = {};
+
+    for (let i = 0; i < groupMessages.length; i++) {
+      let message = groupMessages[i];
+      const parsed = JSON.parse(message);
+      const key = Object.keys(parsed)[0];
+      if (!members[key]) {
+        const { data: member } = await axios.get(`/group/getMember/${key}`);
+        members[key] = member[0];
+      }
+      messages.push(parsed);
+    }
+    setAllMessages(messages.reverse());
+    setAllMembers(members);
+  }
+
   useEffect(() => {
     socket.emit('joinRoom', `GroupChat-${groupId}`);
 
     socket.on('response', (data) => {
       const groupId = data.message.groupId;
-      async function getAllMessages() {
-        const { data: groupMessages } = await axios(
-          `/group/getMessages/${groupId}`
-        );
-        const messages = [];
-        const members = {};
-        groupMessages.forEach((message) => {
-          const parsed = JSON.parse(message);
-          const key = Object.keys(parsed);
-          if (!members[key]) {
-            async function getMember() {
-              const { data: member } = await axios.get(
-                `/group/getMember/${key}`
-              );
-              members[key] = member;
-            }
-
-            getMember();
-          }
-          messages.push(parsed);
-        });
-        console.log(members);
-        console.log(messages);
-        setAllMessages(messages);
-        setAllMembers(members);
-      }
-      getAllMessages();
+      getAllMessages(groupId);
     });
+
+    getAllMessages(groupId);
     // Unsubscribe from the 'joinRoom' event when the component unmounts
     return () => {
       socket.off('response');
@@ -70,14 +68,26 @@ function MessageBoard({ groupId, userData }) {
         message: message,
       };
       const { data } = await axios.patch('/group/postMessage', information);
-
       socket.emit('message', {
         room: `GroupChat-${groupId}`,
         message: data,
       });
+      clearMessage();
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function clearMessage() {
+    setMessage('');
+  }
+
+  function getAvatarSrc(item) {
+    const memberId = Object.keys(item)[0];
+    const person = allMembers[memberId];
+    const photo = Buffer.from(person.photo).toString('utf-8');
+    const dataURI = `data:image/png;base64,${photo}`;
+    return dataURI;
   }
 
   const chatBox = (
@@ -91,12 +101,10 @@ function MessageBoard({ groupId, userData }) {
           border: '1px solid rgba(140, 140, 140, 0.35)',
         }}
       >
-        {allMessages && (
+        {allMessages && Object.keys(allMembers).length && (
           <InfiniteScroll
             dataLength={50}
-            // next={loadMoreData}
             hasMore={20 < 50}
-            loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
             endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
             scrollableTarget='scrollableDiv'
           >
@@ -105,10 +113,9 @@ function MessageBoard({ groupId, userData }) {
               renderItem={(item) => (
                 <List.Item key={'special'}>
                   <List.Item.Meta
-                    // avatar={<Avatar src={item.picture.large} />}
-                    description={'test'}
+                    avatar={<Avatar src={getAvatarSrc(item)} />}
+                    description={Object.values(item)}
                   />
-                  <div>{Object.values(item)}</div>
                 </List.Item>
               )}
             />
@@ -118,13 +125,19 @@ function MessageBoard({ groupId, userData }) {
       <TextArea
         rows={4}
         placeholder='Enter your message here'
+        onPressEnter={() => {
+          sendMessage(groupId);
+        }}
         onChange={(event) => {
           setMessage(event.target.value);
         }}
+        value={message}
       />
       <Button
         style={{ background: 'white', borderColor: 'grey' }}
-        onClick={() => sendMessage(groupId)}
+        onClick={() => {
+          sendMessage(groupId);
+        }}
       >
         Send
       </Button>
