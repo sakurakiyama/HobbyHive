@@ -1,4 +1,4 @@
-<img width='400' height='autp' src='https://i.imgur.com/qMBdED6.png' alt='Logo'>
+<img width='400' height='auto' src='https://i.imgur.com/qMBdED6.png' alt='Logo'>
 
 # Hobby Hive Documentation
 
