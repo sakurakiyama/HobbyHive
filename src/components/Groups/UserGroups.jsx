@@ -78,7 +78,7 @@ function UserGroups() {
           key: `sub${key}`,
           //   icon:
           label: groupInfo.groupname,
-          children: new Array(groupData.length).fill(null).map((_, j) => {
+          children: new Array(subHeaders.length).fill(null).map((_, j) => {
             const subKey = index * groupData.length + j + 1;
             return {
               key: subKey,
